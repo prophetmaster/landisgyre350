@@ -5,6 +5,7 @@
 #define IRSERIALSPEED	300
 #define IRSERIALCONF	SERIAL_7E1
 
+String UnitRecognition = "/LGZ4ZMF100AC.M29\r\n"; // change with your meter response !
 String inputString = "";         // a String to hold incoming data
 boolean stringComplete = false;  // whether the string is complete
 
@@ -22,8 +23,8 @@ char message[] = "";
 char * debutPtr;
 
 String VFF = "00";   // Error code (always first in the list)
-String V181 = "11.096";  // Active energy import rate 1 (X = 1…6)
-String V182 = "19.999";  // Active energy import rate 2 (X = 1…6)
+String V181 = "11.096";  // Active energy import rate 1 (X = 1â€¦6)
+String V182 = "19.999";  // Active energy import rate 2 (X = 1â€¦6)
 String V881 = "7.226";  // kvarh rate 1
 String V882 = "5.419";  // kvarh rate 2
 String V180 = "31.096";  // Total active energy import
@@ -138,7 +139,7 @@ void serialEvent1() {
 
 		//while (Serial1.available()) {Serial1.read();}
 
-		if (inputString == "/LGZ4ZMF100AC.M29\r\n") {
+		if (inputString == UnitRecognition) {
 			ack = true;
 		}
 
@@ -194,7 +195,7 @@ void decodeirserial(char *debutPtr) {
 			(finDeLigne == NULL) ||
 			(parentheseOuvrante > parentheseFermante))
 		{
-			Serial.print("ERREUR_FORMAT reçu : ");
+			Serial.print("ERREUR_FORMAT reÃ§u : ");
 			Serial.println(debutPtr);
 
 			break;
@@ -220,7 +221,7 @@ void decodeirserial(char *debutPtr) {
 		// LES DONNES SE TERMINENT SOIT PAR UNE PARENTHESE FERMANTE, SOIT PAR UNE *
 
 		if ((etoile == NULL) || (etoile > finDeLigne)) {
-			// On est dans le cas où il n'y as pas d'unités
+			// On est dans le cas oÃ¹ il n'y as pas d'unitÃ©s
 			nbCaracteres = parentheseFermante - debutPtr;
 
 			if (nbCaracteres > maxData) {
@@ -232,11 +233,11 @@ void decodeirserial(char *debutPtr) {
 			strncpy(valeur, debutPtr, nbCaracteres);
 			valeur[nbCaracteres] = '\0';
 
-			unite[0] = '\0'; // pas d'unités
+			unite[0] = '\0'; // pas d'unitÃ©s
 
 		}
 		else {
-			// il y a des unités
+			// il y a des unitÃ©s
 			nbCaracteres = etoile - debutPtr;
 
 			if (nbCaracteres > maxData) {
@@ -248,7 +249,7 @@ void decodeirserial(char *debutPtr) {
 			strncpy(valeur, debutPtr, nbCaracteres);
 			valeur[nbCaracteres] = '\0';
 
-			// on saute l'étoile
+			// on saute l'Ã©toile
 			debutPtr = etoile + 1;
 
 			nbCaracteres = parentheseFermante - debutPtr;
@@ -337,7 +338,7 @@ void decodeirserial(char *debutPtr) {
 
 		Serial.print(F("\", VALEUR = \"")); Serial.print(valeur);
 
-		if (unite[0] != '\0') { // si on avait des unités
+		if (unite[0] != '\0') { // si on avait des unitÃ©s
 			Serial.print(F("\", UNITE = \"")); Serial.print(unite);
 		}
 	} // FIN DU WHILE
