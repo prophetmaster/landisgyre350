@@ -137,11 +137,10 @@ void presentation()
 void setup() {
 
 	// initialize serial:
-	Serial.begin(SERIALSPEED);
-	Serial1.begin(IRSERIALSPEED, IRSERIALCONF);
+	Serial.begin(SERIALSPEED); // (RX pin 0, TX pin 1, speed, config)
+	Serial1.begin(IRSERIALSPEED, IRSERIALCONF); // (RX pin 19, TX pin 18, speed, config)
 
-	// reserve 200 bytes for the inputString:
-	inputString.reserve(200);
+	inputString.reserve(200); // reserve 200 bytes for the inputString:
 	while (!Serial) {
 		; // wait for serial port to connect. Needed for native USB
 	}
@@ -157,8 +156,8 @@ void loop() {
 	if (stringComplete) {
 		Serial.print(" RECEIVE : ");
 		Serial.print(inputString);
-		// clear the string:
-		inputString = "";
+		
+		inputString = ""; // clear the string:
 		stringComplete = false;
 	}
 
