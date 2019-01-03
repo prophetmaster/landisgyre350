@@ -27,28 +27,27 @@
 #define IRSERIALSPEED 300
 #define IRSERIALCONF  SERIAL_7E1
 
-String inputString = "";        // a String to hold incoming data
+String inputString = "";  // a String to hold incoming data
 String content = "";			// Content from ir serial
 
 bool stringComplete = false;	// whether the string is complete
-bool poll = false;				// POLL flag when sending message to electric meter
-bool ack = false;				// ACK flag when sending message to electric meter
-bool clearserial = false;		// Clearing serial if needed
+bool poll = false;				    // POLL flag when sending message to electric meter
+bool ack = false;				      // ACK flag when sending message to electric meter
+bool clearserial = false;		  // Clearing serial if needed
 
-uint32_t currentTime = 0;			// Actual time
+uint32_t currentTime = 0;			    // Actual time
 uint32_t sendFrequency = 600000;	// frequency send to MySensors
-uint32_t lastSend = 0;				// Last send time
+uint32_t lastSend = 0;				    // Last send time
 uint32_t readFrequency = 60000;		// frequency read electric meter 
-uint32_t lastread = 0;				// Last read electric meter time
+uint32_t lastread = 0;				    // Last read electric meter time
 
-const byte maxData = 30;    //
-char response;					// 
-char label[maxData + 1];	// 
-char value[maxData + 1];		// 
-char unit[maxData + 1];		// 
-char message[] = "";			// 
-char * ElectricMeterResponse;				// 
-
+const byte maxData = 30;      // Maximum data size
+char response;					      // 
+char label[maxData + 1];	    // 
+char value[maxData + 1];	    // 
+char unit[maxData + 1];		    // 
+char message[] = "";			    // 
+char * ElectricMeterResponse;	// 
  
 size_t nbOfCharacter;			// Character number of the received message
 
@@ -73,27 +72,6 @@ String V137;  // Power Factor Phase Summation
 String V8281; // Terminal cover removal counter
 String V8282; // DC Field Count
 
-int VFF_ID = 0;
-int V181_ID = 1;
-int V182_ID = 2;
-int V881_ID = 3;
-int V882_ID = 4;
-int V180_ID = 5;
-int V880_ID = 6;
-int VC70_ID = 7;
-int V327_ID = 8;
-int V527_ID = 9;
-int V727_ID = 10;
-int V317_ID = 11;
-int V517_ID = 12;
-int V717_ID = 13;
-int V337_ID = 14;
-int V537_ID = 15;
-int V737_ID = 16;
-int V137_ID = 17;
-int V8281_ID = 18;
-int V8282_ID = 19;
-
 //array error message type
 enum : byte {
 	ANALYSE_OK,
@@ -103,29 +81,29 @@ enum : byte {
 
 
 
-#include <MySensors.h>
+#include <MySensors.h> // include MySensors library
 
 // Define child sensor
-MyMessage VFFMsg(VFF_ID, S_INFO);
-MyMessage V181Msg(V181_ID, V_KWH);
-MyMessage V182Msg(V182_ID, V_KWH);
-MyMessage V881Msg(V881_ID, V_VAR);
-MyMessage V882Msg(V882_ID, V_VAR);
-MyMessage V180Msg(V180_ID, V_KWH);
-MyMessage V880Msg(V880_ID, V_VAR);
-MyMessage VC70Msg(VC70_ID, V_VAR1);
-MyMessage V327Msg(V327_ID, V_VA);
-MyMessage V527Msg(V527_ID, V_VA);
-MyMessage V727Msg(V727_ID, V_VA);
-MyMessage V317Msg(V317_ID, V_VA);
-MyMessage V517Msg(V517_ID, V_VA);
-MyMessage V717Msg(V717_ID, V_VA);
-MyMessage V337Msg(V337_ID, V_POWER_FACTOR);
-MyMessage V537Msg(V537_ID, V_POWER_FACTOR);
-MyMessage V737Msg(V737_ID, V_POWER_FACTOR);
-MyMessage V137Msg(V137_ID, V_POWER_FACTOR);
-MyMessage V8281Msg(V8281_ID, V_VAR2);
-MyMessage V8282Msg(V8282_ID, V_VAR3);
+MyMessage VFFMsg(0, S_INFO);
+MyMessage V181Msg(1, V_KWH);
+MyMessage V182Msg(2, V_KWH);
+MyMessage V881Msg(3, V_VAR);
+MyMessage V882Msg(4, V_VAR);
+MyMessage V180Msg(5, V_KWH);
+MyMessage V880Msg(6, V_VAR);
+MyMessage VC70Msg(7, V_VAR1);
+MyMessage V327Msg(8, V_VA);
+MyMessage V527Msg(9, V_VA);
+MyMessage V727Msg(10, V_VA);
+MyMessage V317Msg(11, V_VA);
+MyMessage V517Msg(12, V_VA);
+MyMessage V717Msg(13, V_VA);
+MyMessage V337Msg(14, V_POWER_FACTOR);
+MyMessage V537Msg(15, V_POWER_FACTOR);
+MyMessage V737Msg(16, V_POWER_FACTOR);
+MyMessage V137Msg(17, V_POWER_FACTOR);
+MyMessage V8281Msg(18, V_VAR2);
+MyMessage V8282Msg(19, V_VAR3);
 
 
 void presentation()
@@ -133,26 +111,26 @@ void presentation()
 	// Send the sketch version information to the gateway and Controller
 	sendSketchInfo("Landis & Gyr E350 Energy Meter", "1.0");
 
-	present(VFF_ID, S_CUSTOM);
-	present(V181_ID, S_POWER);
-	present(V182_ID, S_POWER);
-	present(V881_ID, S_POWER);
-	present(V882_ID, S_POWER);
-	present(V180_ID, S_POWER);
-	present(V880_ID, S_POWER);
-	present(VC70_ID, S_CUSTOM);
-	present(V327_ID, S_POWER);
-	present(V527_ID, S_POWER);
-	present(V727_ID, S_POWER);
-	present(V317_ID, S_POWER);
-	present(V517_ID, S_POWER);
-	present(V717_ID, S_POWER);
-	present(V337_ID, S_POWER);
-	present(V537_ID, S_POWER);
-	present(V737_ID, S_POWER);
-	present(V137_ID, S_POWER);
-	present(V8281_ID, S_CUSTOM);
-	present(V8282_ID, S_CUSTOM);
+	present(0, S_CUSTOM);
+	present(1, S_POWER);
+	present(2, S_POWER);
+	present(3, S_POWER);
+	present(4, S_POWER);
+	present(5, S_POWER);
+	present(6, S_POWER);
+	present(7, S_CUSTOM);
+	present(8, S_POWER);
+	present(9, S_POWER);
+	present(10, S_POWER);
+	present(11, S_POWER);
+	present(12, S_POWER);
+	present(13, S_POWER);
+	present(14, S_POWER);
+	present(15, S_POWER);
+	present(16, S_POWER);
+	present(17, S_POWER);
+	present(18, S_CUSTOM);
+	present(19, S_CUSTOM);
 
 }
 
