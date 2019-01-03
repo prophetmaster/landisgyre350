@@ -80,7 +80,6 @@ enum : byte {
 } erreur;
 
 
-
 #include <MySensors.h> // include MySensors library
 
 // Define child sensor
@@ -131,7 +130,6 @@ void presentation()
 	present(17, S_POWER);
 	present(18, S_CUSTOM);
 	present(19, S_CUSTOM);
-
 }
 
 
@@ -416,8 +414,7 @@ void decodeirserial(char *ElectricMeterResponse) {
 		if ((String)label == "73.7") { V737 = (String)value; }
 		if ((String)label == "13.7") { V137 = (String)value; }
 		if ((String)label == "82.8.1") { V8281 = (String)value; }
-		if ((String)label == "82.8.2") {
-			V8282 = (String)value;
+		if ((String)label == "82.8.2") { V8282 = (String)value;
 
 			/* Uncomment for debugging
 			Serial.print("FF : ");
@@ -461,29 +458,6 @@ void decodeirserial(char *ElectricMeterResponse) {
 			Serial.print("V8282 : ");
 			Serial.println(V8282);
 			*/
-
-			//send values to gateway
-			send(VFFMsg.set(VFF.toFloat(), 0));
-			send(V181Msg.set(V181.toFloat(), 3));
-			send(V182Msg.set(V182.toFloat(), 3));
-			send(V881Msg.set(V881.toFloat(), 3));
-			send(V882Msg.set(V882.toFloat(), 3));
-			send(V180Msg.set(V180.toFloat(), 3));
-			send(V880Msg.set(V880.toFloat(), 3));
-			send(VC70Msg.set(VC70.toFloat(), 0));
-			send(V327Msg.set(V327.toFloat(), 3));
-			send(V527Msg.set(V527.toFloat(), 3));
-			send(V727Msg.set(V727.toFloat(), 3));
-			send(V317Msg.set(V317.toFloat(), 3));
-			send(V517Msg.set(V517.toFloat(), 3));
-			send(V717Msg.set(V717.toFloat(), 3));
-			send(V337Msg.set(V337.toFloat(), 3));
-			send(V537Msg.set(V537.toFloat(), 3));
-			send(V737Msg.set(V737.toFloat(), 3));
-			send(V137Msg.set(V137.toFloat(), 3));
-			send(V8281Msg.set(V8281.toFloat(), 0));
-			send(V8282Msg.set(V8282.toFloat(), 0));
-
 		}
 
 		//Serial.print(F("\", value = \"")); Serial.print(value); // Uncomment for debugging
