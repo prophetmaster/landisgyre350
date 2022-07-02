@@ -1,0 +1,177 @@
+# yaml file for device
+
+substitutions:
+  devicename: mynode
+  upper_devicename: MYNODE
+
+esphome:
+  name: $devicename
+  platform: ESP32
+  board: esp32dev
+  includes:
+    - landisgyr.h
+      
+wifi:
+  networks:
+    - ssid: !secret wifi_SSID
+      password: !secret wifi_PASS
+  ap:
+    ssid: "$devicename reader Hotspot"
+
+captive_portal:
+
+# Enable logging
+logger:
+  level: DEBUG
+  baud_rate: 115200 #0
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+uart:
+  - rx_pin: GPIO19
+    tx_pin: GPIO18
+    baud_rate: 300
+    data_bits: 7
+    parity: EVEN
+    stop_bits: 1
+    id: uart_bus
+    #debug:
+
+sensor:
+  - platform: custom
+    lambda: |-
+      auto landisgyr_uart = new landisgyrComponent(id(uart_bus));
+      App.register_component(landisgyr_uart);
+      return { landisgyr_uart->errorCode, landisgyr_uart->customerIdentification, landisgyr_uart->firmwareVersion, landisgyr_uart->meterId, landisgyr_uart->manufacturingId, landisgyr_uart->statusFlag, landisgyr_uart->eventPowerDownCounter, landisgyr_uart->terminalCoverRemovalCounter, landisgyr_uart->dcFieldCount, landisgyr_uart->positiveActiveEnergyTot, landisgyr_uart->positiveActiveEnergy1, landisgyr_uart->positiveActiveEnergy2, landisgyr_uart->negativeActiveEnergyTot, landisgyr_uart->negativeActiveEnergy1, landisgyr_uart->negativeActiveEnergy2, landisgyr_uart->importedInductiveReactiveEnergyTot, landisgyr_uart->importedInductiveReactiveEnergy1, landisgyr_uart->importedInductiveReactiveEnergy2, landisgyr_uart->importedCapacitiveReactiveEnergyTot, landisgyr_uart->importedCapacitiveReactiveEnergy1, landisgyr_uart->importedCapacitiveReactiveEnergy2, landisgyr_uart->exportedInductiveReactiveEnergyTot, landisgyr_uart->exportedInductiveReactiveEnergy1, landisgyr_uart->exportedInductiveReactiveEnergy2, landisgyr_uart->exportedCapacitiveReactiveEnergyTot, landisgyr_uart->exportedCapacitiveReactiveEnergy1, landisgyr_uart->exportedCapacitiveReactiveEnergy2, landisgyr_uart->instantaneousVoltageP1, landisgyr_uart->instantaneousVoltageP2, landisgyr_uart->instantaneousVoltageP3, landisgyr_uart->instantaneousCurrentP1, landisgyr_uart->instantaneousCurrentP2, landisgyr_uart->instantaneousCurrentP3, landisgyr_uart->instantaneousPowerFactorP1, landisgyr_uart->instantaneousPowerFactorP2, landisgyr_uart->instantaneousPowerFactorP3, landisgyr_uart->instantaneousPowerFactor };
+    sensors:
+      - name: "Error code"
+        accuracy_decimals: 0
+      - name: "Customer identification"
+        accuracy_decimals: 0
+      - name: "Firmware version"
+        accuracy_decimals: 0
+      - name: "Meter id"
+        accuracy_decimals: 0
+      - name: "manufacturing id"
+        accuracy_decimals: 0
+      - name: "Status flag"
+        accuracy_decimals: 0
+      - name: "Event power down counter"
+        accuracy_decimals: 0
+      - name: "Terminal cover removal counter"
+        accuracy_decimals: 0
+      - name: "dc field count"
+        accuracy_decimals: 0
+      - name: "Positive active energy total"
+        unit_of_measurement: kWh
+        accuracy_decimals: 5
+      - name: "Positive active energy 1"
+        unit_of_measurement: kWh
+        accuracy_decimals: 5
+      - name: "Positive active energy 2"
+        unit_of_measurement: kWh
+        accuracy_decimals: 5
+      - name: "Negative active energy Tot"
+        unit_of_measurement: kWh
+        accuracy_decimals: 5
+      - name: "Negative active energy 1"
+        unit_of_measurement: kWh
+        accuracy_decimals: 5
+      - name: "Negative active energy 2"
+        unit_of_measurement: kWh
+        accuracy_decimals: 5
+      - name: "Imported inductive reactive energy Total"
+        unit_of_measurement: kvarh
+        accuracy_decimals: 5
+      - name: "Imported inductive reactive energy 1"
+        unit_of_measurement: kvarh
+        accuracy_decimals: 5
+      - name: "Imported inductive reactive energy 2"
+        unit_of_measurement: kvarh
+        accuracy_decimals: 5
+      - name: "Imported capacitive reactive energy Total"
+        unit_of_measurement: kvarh
+        accuracy_decimals: 5
+      - name: "Imported capacitive reactive energy 1"
+        unit_of_measurement: kvarh
+        accuracy_decimals: 5
+      - name: "Imported capacitive reactive energy 2"
+        unit_of_measurement: kvarh
+        accuracy_decimals: 5
+      - name: "Exported inductive reactive energy Total"
+        unit_of_measurement: kvarh
+        accuracy_decimals: 5
+      - name: "Exported inductive reactive energy 1"
+        unit_of_measurement: kvarh
+        accuracy_decimals: 5
+      - name: "Exported inductive reactive energy 2"
+        unit_of_measurement: kvarh
+        accuracy_decimals: 5
+      - name: "Exported capacitive reactive energy Total"
+        unit_of_measurement: kvarh
+        accuracy_decimals: 5
+      - name: "Exported capacitive reactive energy 1"
+        unit_of_measurement: kvarh
+        accuracy_decimals: 5
+      - name: "Exported capacitive reactive energy 2"
+        unit_of_measurement: kvarh
+        accuracy_decimals: 5
+      - name: "Instantaneous voltage P1"
+        unit_of_measurement: V
+        accuracy_decimals: 0
+      - name: "Instantaneous voltage P2"
+        unit_of_measurement: V
+        accuracy_decimals: 0
+      - name: "Instantaneous voltage P3"
+        unit_of_measurement: V
+        accuracy_decimals: 0
+      - name: "Instantaneous current P1"
+        unit_of_measurement: A
+        accuracy_decimals: 3
+      - name: "Instantaneous current P2"
+        unit_of_measurement: A
+        accuracy_decimals: 3
+      - name: "Instantaneous current P3"
+        unit_of_measurement: A
+        accuracy_decimals: 3
+      - name: "Instantaneous power factor P1"
+        accuracy_decimals: 2
+      - name: "Instantaneous power factor P2"
+        accuracy_decimals: 2
+      - name: "Instantaneous power factor P3"
+        accuracy_decimals: 2
+      - name: "Instantaneous power factor total"
+        accuracy_decimals: 2
+
+interval:
+  - interval: 30s
+    then:
+      - logger.log: "SEND /?!<CR><LF>"
+      - uart.write: [0x2F, 0x3F, 0x21, 0x0D, 0x0A]
+      - logger.log: "DELAY 3s"
+      - delay: 3s
+      - logger.log: "SEND <ACK>000<CR><LF>"
+      - uart.write: [0x06, 0x30, 0x30, 0x30, 0x0D, 0x0A]
+
+switch:
+  - platform: restart
+    name: $devicename restart
+
+  - platform: shutdown
+    name: $devicename shutdown
+    
+  - platform: template
+    name: "request meter data's"
+    turn_on_action:
+      then:
+          - logger.log: "SEND /?!<CR><LF>"
+          - uart.write: [0x2F, 0x3F, 0x21, 0x0D, 0x0A]
+          - logger.log: "DELAY 3s"
+          - delay: 3s
+          - logger.log: "SEND <ACK>000<CR><LF>"
+          - uart.write: [0x06, 0x30, 0x30, 0x30, 0x0D, 0x0A]
+          
+  
