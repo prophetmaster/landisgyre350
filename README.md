@@ -1,5 +1,5 @@
 
-# landis & gyr E350
+# landis & gyr E350 DLMS - COSEM
 Read landis &amp; Gyr E350 Electricity Meters for MySensors
 
 # Material
